@@ -14,9 +14,12 @@ Circle Manhattan Plot
 }
 \usage{
 CMplot(Pmap, col = c("red", "black", "green", "blue", "orange"), pch = 19,
-	  band = 1, cir.band = 1, H = 1, out = "b", cex = c(0.5, 1), r = 1, 
-	  outward = TRUE, line = TRUE, amplify = TRUE, cir.chr = TRUE, chr.band = 1, 
-	  chr.col = NULL, cir.labels = TRUE, amplify.col = c("red", "green"))
+	  band = 1, cir.band = 1, H = 1, ylim = NULL, cex.axis = 1, output = "b",
+	  multracks = FALSE, cex = c(0.5, 1), r = 1, xlab = "Chromosome", 
+	  ylab = expression(-log[10](italic(p))), outward = TRUE, threshold = 0.01,
+	  threshold.col="red", amplify = TRUE, signal.cex = 1.5, signal.pch = 19,
+	  signal.col="red", cir.chr = TRUE, chr.band = 1, chr.col = NULL, 
+	  cir.labels = TRUE, plot0 = FALSE, fill = "jpg", dpi = 300)
 }
 \arguments{
   \item{Pmap}{
@@ -37,8 +40,17 @@ a number, the space between circles, the default is 1
   \item{H}{
 a number, the height for each circle, each circle a trait, the default is 1
 }
-  \item{out}{
+  \item{ylim}{
+a vector, the range of Y-axis when plotting, is the same with "ylim" in <plot>
+}
+  \item{cex.axis}{
+a number, controls the size of labels of X-axis 
+}
+  \item{output}{
 a character, only "c" or "m" or "b" can be used. if plottype="c",only circle-Manhattan plot will be plotted; if plottype="m",only Manhattan plot will be plotted; if plottype="b",both circle-Manhattan and Manhattan plots will be plotted;
+}
+  \item{multracks}{
+a logical,if multracks=FALSE, plotting rectangular Manhattan plot on only one track, if TRUE,it will make multiple tracks for the rectangular one
 }
   \item{cex}{
 a vector, the size for the points, is the same with "size" in <plot>, and the first number controls the size of points in circle plot(the default is 0.5), the second number controls the size of points in Manhattan plot(the default is 1)
@@ -46,14 +58,32 @@ a vector, the size for the points, is the same with "size" in <plot>, and the fi
   \item{r}{
 a number, the radius for the circle(the inside radius), the default is 1
 }
+  \item{xlab}{
+a character, the labels for x axis.
+}
+  \item{ylab}{
+a character, the labels for y axis.
+}
   \item{outward}{
 logical, if outward=TRUE,then all points will be plotted from inside to outside.
 }
-  \item{line}{
-logical, CMplot can add two significant lines: significant1=-log10(1/makers), significant2=-log10(0.01/makers). if siglines=T,then two linse will be added to the plot.the default: amplify=TRUE
+  \item{threshold}{
+a number, users can adjust the significant level they wanted, if threshold=0 or =NULL, then the threshold line will not be added,the default is 0.01
+}
+\item{threshold.col}{
+a character, the colour for the line of threshold level
 }
   \item{amplify}{
-logical, CMplot can amplify the significant points, if amplify=T, then the points greater than significant1 will be 1.5 times bigger than normal, the default: amplify=TRUE
+logical, CMplot can amplify the significant points, if amplify=T, then the points greater than significant level will be bigger than normal, the default: amplify=TRUE
+}
+\item{signal.cex}{
+a number, if amplify=TRUE, users can choose the size of significant points bigger than threshold.
+}
+\item{signal.pch}{
+a number, if amplify=TRUE, users can choose the shape of significant points bigger than threshold.
+}
+\item{signal.col}{
+a character, if amplify=TRUE, users can choose the colour of significant points bigger than threshold.
 }
   \item{cir.chr}{
 logical, a boundary represents chromosome, the default is TRUE
@@ -67,16 +97,22 @@ a character, the colour for the boundary, only one colour is allowed, if chr.col
   \item{cir.labels}{
 logical, whether to add the name of chromosome to the circle plot("S" means sex chromosome), the default: cir.labels=TRUE
 }
-  \item{amplify.col}{
-a vector, the color for the points greater than significant1, the first colour controls the points which greater than significant1 and smaller than significant2, the second colour controls the points which greater than significant2,the default: amplify.col=c("red","green").
+ \item{plot0}{
+logical, users can choose whether to plot the chromosome (written as 0) with no clear chr number in both Manhattan plot
+}
+ \item{fill}{
+a character, users can choose the different output type of plot, so for, "jpg","pdf","tiff" can be selected by users
+}
+  \item{dpi}{
+a number, the picture element for .jpg and .tiff files
 }
 }
 \details{
 \tabular{ll}{
 Package: \tab CMplot\cr
 Type: \tab Package\cr
-Version: \tab 2.0.1\cr
-Date: \tab 2015-06-015\cr
+Version: \tab 3.0.1\cr
+Date: \tab 2015-08-10\cr
 License: \tab GPL(>=2)\cr
 }
 }
@@ -86,19 +122,18 @@ Maintainer: LiLin-Yin <ylilin@163.com>
 }
 \note{
 1: In the data "Pmap", autosome and heterosome can both exist simultaneously, and heterosome can also be replaced by a number. \cr
-2: only when the amplify=TRUE,then the parameter amplify.col=c("red","green") will be efficacious. \cr
+2: only when the amplify=TRUE,then the parameter signal.cex, signal.pch, signal.col will be efficacious. \cr
 3: In the circle Manhattan plot, traits will be plotted from inside to outside,it means that the first trait occupies the innermost circle. \cr
-4: When line=TRUE, if the points smaller than significant1 or significant2, then the significant line will not be added. 
 }
 \examples{
 #plot rectangular Manhattan only one trait with 20000 makers:
 data(pig60K)                        
-CMplot(pig60K[1:20000,c(1:4)],out="m")
+CMplot(pig60K[1:20000,c(1:4)],output="m",multracks=TRUE)
  
 ################################################################################
 #plot circular Manhattan for all traits with all makers:                       #
 ################################################################################
 #data(pig60K)                                                                  #         
-#CMplot(pig60K,col=c("gray30","gray60"),r=0.5,out="c",outward=FALSE,line=FALSE)#
+#CMplot(pig60K,col=c("gray30","gray60"),r=0.5,output="c",outward=FALSE)        #
 ################################################################################
 }

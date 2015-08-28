@@ -1,1 +1,3 @@
 exportPattern("^[[:alpha:]]+")
+importFrom("grDevices", "dev.off", "jpeg","pdf","tiff")
+importFrom("graphics", "abline", "axis", "lines", "par", "plot","points", "polygon", "text")

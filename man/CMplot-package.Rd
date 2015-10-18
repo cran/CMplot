@@ -19,7 +19,7 @@ CMplot(Pmap, col = c("red", "black", "green", "blue", "orange"), pch = 19,
 	  ylab = expression(-log[10](italic(p))), outward = TRUE, threshold = 0.01,
 	  threshold.col="red", amplify = TRUE, signal.cex = 1.5, signal.pch = 19,
 	  signal.col="red", cir.chr = TRUE, chr.band = 1, chr.col = NULL, 
-	  cir.labels = TRUE, plot0 = FALSE, fill = "jpg", dpi = 300)
+	  cir.labels = TRUE, plot0 = FALSE, fill.output=TRUE, fill = "jpg", dpi = 300)
 }
 \arguments{
   \item{Pmap}{
@@ -100,6 +100,9 @@ logical, whether to add the name of chromosome to the circle plot("S" means sex 
  \item{plot0}{
 logical, users can choose whether to plot the chromosome (written as 0) with no clear chr number in both Manhattan plot
 }
+ \item{fill.output}{
+a logical, users can choose whether output the plot results
+}
  \item{fill}{
 a character, users can choose the different output type of plot, so for, "jpg","pdf","tiff" can be selected by users
 }
@@ -111,8 +114,8 @@ a number, the picture element for .jpg and .tiff files
 \tabular{ll}{
 Package: \tab CMplot\cr
 Type: \tab Package\cr
-Version: \tab 3.0.1\cr
-Date: \tab 2015-08-10\cr
+Version: \tab 3.0.3\cr
+Date: \tab 2015-10-15\cr
 License: \tab GPL(>=2)\cr
 }
 }

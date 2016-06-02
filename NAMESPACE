@@ -1,3 +1,5 @@
 exportPattern("^[[:alpha:]]+")
 importFrom("grDevices", "dev.off", "dev.new", "jpeg", "pdf", "tiff")
-importFrom("graphics", "abline", "axis", "lines", "par", "plot","points", "polygon", "text")
+importFrom("graphics", "abline", "axis","segments","curve","lines", "par", "plot","points", "polygon", "text","mtext")
+importFrom("stats", "na.omit", "qbeta")
+importFrom("utils", "packageVersion")

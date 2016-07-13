@@ -11,18 +11,20 @@ Circle Manhattan Plot
  integration of results from different Genome-wide association study researches. Circle Manhattan Plot is the first open R package that can lay out 
  Genome-wide association study P-value results in QQ-plot, both traditional rectangular patterns and novel circular ones. United in only one bull's eye style 
  plot, association results from multiple traits can be compared interactively, thereby to reveal both similarities and differences between signals.
-}
+ The recently source codes: \emph{\url{https://github.com/YinLiLin/R-CMplot/blob/master/CMplot.r}}
+ }
 \usage{
 CMplot(Pmap, col = c("darkgreen","darkmagenta","navy","black","orange"), pch = 19,
-	  band = 1, cir.band = 1, H = 1, ylim = NULL, cex.axis = 1, plot.type = "b",
-	  multracks = FALSE, cex = c(0.5,1,1), r = 1, xlab = "Chromosome",
-	  ylab = expression(-log[10](italic(p))), outward = TRUE, threshold = NULL,
-	  threshold.col="red", threshold.lwd = 1, threshold.lty = 2, amplify = TRUE,
-	  signal.cex = 1.5, signal.pch = 19, signal.col="red", cir.chr = TRUE,
-	  cir.chr.h = 1, cir.chr.col = "black", cir.chr.labels = NULL,
-	  cir.legend = TRUE, cir.legend.cex = 0.5, cir.legend.col = "grey45",
-	  LOG10 = TRUE, conf.int = TRUE, conf.int.col = "grey", plot0 = TRUE,
-	  fill.output = TRUE, fill = "jpg", dpi = 300)
+	  band = 1, cir.band = 1, H = 1, ylim = NULL, cex.axis = 1, plot.type = "m",
+	  multracks = FALSE, cex = c(0.5,1,1),r = 1, xlab = "Chromosome",
+	  ylab = expression(-log[10](italic(p))),xaxs = "i",yaxs = "r",outward = TRUE, 
+	  threshold = NULL,threshold.col="red", threshold.lwd = 1, threshold.lty = 2,
+	  amplify = TRUE,chr.labels = NULL,signal.cex = 1.5, signal.pch = 19, 
+	  signal.col="red", signal.line = NULL, cir.chr = TRUE,cir.chr.h = 1,
+	  cir.chr.col = "black", cir.legend = TRUE, cir.legend.cex = 0.5,
+	  cir.legend.col = "grey45", LOG10 = TRUE, box=FALSE, conf.int = TRUE,
+	  conf.int.col = "grey", plot0 = TRUE,file.output = TRUE,
+	  file = "jpg", dpi = 300)
 }
 \arguments{
   \item{Pmap}{
@@ -69,11 +71,17 @@ a character, the labels for x axis.
   \item{ylab}{
 a character, the labels for y axis.
 }
+  \item{xaxs}{
+a character, The style of axis interval calculation to be used for the x-axis. Possible values are "r", "i", "e", "s", "d". The styles are generally controlled by the range of data or xlim, if given.
+}
+  \item{yaxs}{
+a character, The style of axis interval calculation to be used for the y-axis. See xaxs above..
+}
   \item{outward}{
 logical, if outward=TRUE,then all points will be plotted from inside to outside.
 }
   \item{threshold}{
-a number or vector, users can adjust the significant level they want, more than one significant line can be added on the plots, if threshold=0 or NULL, then the threshold line will not be added, the default is 0.01.
+a number or vector, users can adjust the significant level they want, more than one significant line can be added on the plots, if threshold=0 or NULL, then the threshold line will not be added.
 }
   \item{threshold.col}{
 a character or vector, the colour for the line of threshold levels.
@@ -87,14 +95,20 @@ a number or vector, the type for the line of threshold levels.
   \item{amplify}{
 logical, CMplot can amplify the significant points, if amplify=T, then the points greater than the minimal significant level will be highlighted, the default: amplify=TRUE.
 }
-\item{signal.cex}{
+  \item{chr.labels}{
+a vector, the labels for the chromosomes of circle-Manhattan plot.
+}
+  \item{signal.cex}{
 a number, if amplify=TRUE, users can set the size of significant points.
 }
-\item{signal.pch}{
+  \item{signal.pch}{
 a number, if amplify=TRUE, users can set the shape of significant points.
 }
-\item{signal.col}{
+  \item{signal.col}{
 a character, if amplify=TRUE, users can set the colour of significant points, if signal.col=NULL, then the colors of significant points will not be changed.
+}
+  \item{signal.line}{
+a number, the width of the lines cross the circle
 }
   \item{cir.chr}{
 logical, a boundary represents chromosome, the default is TRUE.
@@ -104,9 +118,6 @@ a number, the width for the boundary, if cir.chr=FALSE, then this parameter will
 }
   \item{cir.chr.col}{
 a character, the colour for the boundary, only one colour is allowed, if cir.chr.col=NULL, then the default colours are the same with the parameter "col".
-}
-  \item{cir.chr.labels}{
-a vector, the labels for the chromosomes of circle-Manhattan plot.
 }
   \item{cir.legend}{
 logical, whether to add the legend of each circle.
@@ -120,6 +131,9 @@ a character, the color of the axis of legend.
   \item{LOG10}{
 logical, whether to change the p-value into log10(p-value).
 }
+ \item{box}{
+logical, this function draws a box around the current Manhattan plot.
+}
   \item{conf.int}{
 logical, whether to drew the confidence interval on QQ-plot.
 }
@@ -129,10 +143,10 @@ a character, the color of the confidence interval on QQ-plot.
  \item{plot0}{
 logical, users can choose whether to plot the chromosome (written as 0) which has no clear chromosome number in all plots.
 }
- \item{fill.output}{
+ \item{file.output}{
 a logical, users can choose whether to output the plot results.
 }
- \item{fill}{
+ \item{file}{
 a character, users can choose the different output formats of plot, so for, "jpg", "pdf", "tiff" can be selected by users.
 }
   \item{dpi}{
@@ -143,14 +157,14 @@ a number, the picture element for .jpg and .tiff files. The default is 300.
 \tabular{ll}{
 Package: \tab CMplot\cr
 Type: \tab Package\cr
-Version: \tab 3.1.3\cr
-Date: \tab 2016-05-23\cr
+Version: \tab 3.1.4\cr
+Date: \tab 2016-07-01\cr
 License: \tab GPL(>=2)\cr
 }
 }
 \author{
 LiLin-Yin \cr
-Maintainer: LiLin-Yin <ylilin@163.com>
+Maintainer: LiLin-Yin <\bold{ylilin@163.com}>
 }
 \note{
 1: In the data "Pmap", autosome and heterosome can both exist simultaneously, and heterosome can also be replaced by a number. \cr

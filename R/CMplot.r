@@ -11,34 +11,38 @@ cir.band=1,
 H=1,
 ylim=NULL,
 cex.axis=1,
-plot.type="b",
+plot.type="m",
 multracks=FALSE,
 cex=c(0.5,1,1),
 r=1,
 xlab="Chromosome",
 ylab=expression(-log[10](italic(p))),
+xaxs="i",
+yaxs="r",
 outward=TRUE,
 threshold = NULL, 
 threshold.col="red",
 threshold.lwd=1,
 threshold.lty=2,
 amplify= TRUE,
+chr.labels=NULL,
 signal.cex = 1.5,
 signal.pch = 19,
 signal.col="red",
+signal.line=NULL,
 cir.chr=TRUE,
 cir.chr.h=1,
 cir.chr.col="black",
-cir.chr.labels=NULL,
 cir.legend=TRUE,
 cir.legend.cex=0.5,
 cir.legend.col="grey45",
 LOG10=TRUE,
+box=FALSE,
 conf.int=TRUE,
 conf.int.col="grey",
 plot0=TRUE,
-fill.output=TRUE,
-fill="jpg",
+file.output=TRUE,
+file="jpg",
 dpi=300
 )
 
@@ -51,11 +55,11 @@ dpi=300
 	}
 	
 	#print the version of CMplot
-	print(paste(paste(rep("*",5),collapse=""),"Welcome to use CMplot!",paste(rep("*",5),collapse=""),sep=""),quote=F)
-	print(paste("* ","Version: ",packageVersion("CMplot"),paste(rep(" ",15),collapse=""),"*",sep=""),quote=F)
-	print(paste("* "," Author: Lilin Yin",paste(rep(" ",11),collapse=""),"*",sep=""),quote=F)
-	print(paste("* ","Contact: ylilin@163.com",paste(rep(" ",6),collapse=""),"*",sep=""),quote=F)
-	print(paste(rep("*",32),collapse=""),quote=F)
+	print(paste("#",paste(rep("-",10),collapse=""),"Welcome to use CMplot!",paste(rep("-",10),collapse=""),"#",sep=""),quote=FALSE)
+	print(paste("# ","Version: ",packageVersion("CMplot"),paste(rep(" ",27),collapse=""),"#",sep=""),quote=FALSE)
+	print(paste("# "," Author: Lilin Yin",paste(rep(" ",11),collapse=""),"_\\|//_",paste(rep(" ",5),collapse=""),"#",sep=""),quote=FALSE)
+	print(paste("# ","Contact: ylilin@163.com",paste(rep(" ",5),collapse=""),"( ^o-o^ )",paste(rep(" ",4),collapse=""),"#",sep=""),quote=FALSE)
+	print(paste("#",paste(rep("-",28),collapse=""),"ooO-(_)-Ooo",paste(rep("-",3),collapse=""),"#",sep=""),quote=FALSE)
 
 	if(sum(plot.type %in% "b")==1) plot.type=c("c","m","q")
 	plotXY=TRUE
@@ -74,9 +78,11 @@ dpi=300
 	#scale and adjust the parameters
 	cir.chr.h=cir.chr.h/5
 	cir.band=cir.band/5
-	threshold.col=rep(threshold.col,length(threshold))
-	threshold.lwd=rep(threshold.lwd,length(threshold))
-	threshold.lty=rep(threshold.lty,length(threshold))
+	if(!is.null(threshold)){
+		threshold.col=rep(threshold.col,length(threshold))
+		threshold.lwd=rep(threshold.lwd,length(threshold))
+		threshold.lty=rep(threshold.lty,length(threshold))
+	}
 	if(length(cex)!=3) cex=rep(cex,3)
 	if(!is.null(ylim)){
 		if(length(ylim)==1) ylim=c(0,ylim)
@@ -86,8 +92,8 @@ dpi=300
 	R=dim(Pmap)[2]-2
 	
 	#choose whether to plot the SNPs that have no clear chromosome
-	if(plot0==FALSE) index=c(1:100)
-	if(plot0==TRUE) index=c(0:100)
+	if(plot0==FALSE) index=c(1:10000)
+	if(plot0==TRUE) index=c(0:10000)
 	
 	#pick the SNPs on euchromosome
 	PmapN=Pmap[Pmap[,1] %in% index,]
@@ -131,15 +137,15 @@ dpi=300
 	#plot(pvalue,pch=19,cex=0.6,col=(1024-floor(pvalue*T)))
 	if(!missing(col)){
 		if(is.vector(col)){
-			col=matrix(col,R,length(col),byrow=T)
+			col=matrix(col,R,length(col),byrow=TRUE)
 		}
 		if(is.matrix(col)){
 			#try to transform the colors into matrix for all traits
-			col=matrix(as.vector(t(col)),R,dim(col)[2],byrow=T)
+			col=matrix(as.vector(t(col)),R,dim(col)[2],byrow=TRUE)
 		}
 	}else{
 		# "byrow=T" must be needed to set 
-		col=matrix(c("darkgreen","darkmagenta","navy","black","orange"),R,5,byrow=T)
+		col=matrix(c("darkgreen","darkmagenta","navy","black","orange"),R,5,byrow=TRUE)
 	}
 	
 	Num=as.numeric(table(PmapN[,1]))
@@ -214,19 +220,35 @@ dpi=300
 		TotalN1=dim(pvalueT)[1]
 		TotalN=TotalN1
 	}
-	
+	signal.line.index <- NULL
+	if(!is.null(threshold)){
+		if(!is.null(signal.line)){
+			for(l in 1:R){
+				signal.line.index <- c(signal.line.index,which(pvalueT[,l] < min(threshold)/max(dim(Pmap))))
+			}
+			signal.line.index <- unique(signal.line.index)
+		}
+	}
 	#plot circle Manhattan
 	if("c" %in% plot.type){
 		#print("Starting Circular-Manhattan plot!",quote=F)
-		if(fill.output==TRUE){
-			if(fill=="jpg")	jpeg(paste("Circular-Manhattan.",paste(taxa,collapse="."),".jpg",sep=""), width = 8*dpi,height=8*dpi,res=dpi,quality = 100)
-			if(fill=="pdf")	pdf(paste("Circular-Manhattan.",paste(taxa,collapse="."),".pdf",sep=""), width = 10,height=10)
-			if(fill=="tiff")	tiff(paste("Circular-Manhattan.",paste(taxa,collapse="."),".tiff",sep=""), width = 8*dpi,height=8*dpi,res=dpi)
+		if(file.output==TRUE){
+			if(file=="jpg")	jpeg(paste("Circular-Manhattan.",paste(taxa,collapse="."),".jpg",sep=""), width = 8*dpi,height=8*dpi,res=dpi,quality = 100)
+			if(file=="pdf")	pdf(paste("Circular-Manhattan.",paste(taxa,collapse="."),".pdf",sep=""), width = 10,height=10)
+			if(file=="tiff")	tiff(paste("Circular-Manhattan.",paste(taxa,collapse="."),".tiff",sep=""), width = 8*dpi,height=8*dpi,res=dpi)
 		}
 		par(pty="s",xpd=TRUE,mar=c(1,1,1,1))
 		RR=r+H*R+cir.band*R
-		plot(NULL,xlim=c(1.05*(-RR-4*cir.chr.h),1.05*(RR+4*cir.chr.h)),ylim=c(1.05*(-RR-4*cir.chr.h),1.05*(RR+4*cir.chr.h)),axes=F,xlab="",ylab="")
-		
+		plot(NULL,xlim=c(1.05*(-RR-4*cir.chr.h),1.05*(RR+4*cir.chr.h)),ylim=c(1.05*(-RR-4*cir.chr.h),1.05*(RR+4*cir.chr.h)),axes=FALSE,xlab="",ylab="")
+		if(!is.null(signal.line)){
+			if(!is.null(signal.line.index)){
+				X1chr=(RR)*sin(2*pi*(signal.line.index-round(band/2))/TotalN)
+				Y1chr=(RR)*cos(2*pi*(signal.line.index-round(band/2))/TotalN)
+				X2chr=(r)*sin(2*pi*(signal.line.index-round(band/2))/TotalN)
+				Y2chr=(r)*cos(2*pi*(signal.line.index-round(band/2))/TotalN)
+				segments(X1chr,Y1chr,X2chr,Y2chr,lty=2,lwd=signal.line,col="grey")
+			}
+		}
 		for(i in 1:R){
 		
 			#get the colors for each trait
@@ -236,7 +258,7 @@ dpi=300
 			#debug
 			#print(colx)
 			
-			print(paste("Circular-Plotting ",taxa[i],"...",sep=""),quote=F)
+			print(paste("Circular-Plotting ",taxa[i],"...",sep=""),quote=FALSE)
 			pvalue=pvalueT[,i]
 			logpvalue=logpvalueT[,i]
 			if(plotXY==TRUE){
@@ -411,7 +433,7 @@ dpi=300
 				if(cir.chr==TRUE){
 					ticks1=1.07*(RR+cir.chr.h)*sin(2*pi*(ticks-round(band/2))/TotalN)
 					ticks2=1.07*(RR+cir.chr.h)*cos(2*pi*(ticks-round(band/2))/TotalN)
-					if(is.null(cir.chr.labels)){
+					if(is.null(chr.labels)){
 						for(i in 1:length(ticks)){
 							angle=360*(1-(ticks-round(band/2))[i]/TotalN)
 							text(ticks1[i],ticks2[i],chr[i],srt=angle,font=2,cex=cex.axis)
@@ -419,13 +441,13 @@ dpi=300
 					}else{
 						for(i in 1:length(ticks)){
 							angle=360*(1-(ticks-round(band/2))[i]/TotalN)
-							text(ticks1[i],ticks2[i],cir.chr.labels[i],srt=angle,font=2,cex=cex.axis)
+							text(ticks1[i],ticks2[i],chr.labels[i],srt=angle,font=2,cex=cex.axis)
 						}
 					}
 				}else{
 					ticks1=(0.9*r)*sin(2*pi*(ticks-round(band/2))/TotalN)
 					ticks2=(0.9*r)*cos(2*pi*(ticks-round(band/2))/TotalN)
-					if(is.null(cir.chr.labels)){
+					if(is.null(chr.labels)){
 						for(i in 1:length(ticks)){
 						angle=360*(1-(ticks-round(band/2))[i]/TotalN)
 						text(ticks1[i],ticks2[i],chr[i],srt=angle,font=2,cex=cex.axis)
@@ -433,7 +455,7 @@ dpi=300
 					}else{
 						for(i in 1:length(ticks)){
 							angle=360*(1-(ticks-round(band/2))[i]/TotalN)
-							text(ticks1[i],ticks2[i],cir.chr.labels[i],srt=angle,font=2,cex=cex.axis)
+							text(ticks1[i],ticks2[i],chr.labels[i],srt=angle,font=2,cex=cex.axis)
 						}
 					}
 				}
@@ -444,7 +466,8 @@ dpi=300
 					# YLine=(2*cir.band+RR+cir.chr.h)*cos(2*pi*(1:TotalN)/TotalN)
 					# lines(XLine,YLine,lwd=1.5)
 					circle.plot(myr=2*cir.band+RR+cir.chr.h,lwd=1.5,add=TRUE)
-					
+					circle.plot(myr=2*cir.band+RR,lwd=1.5,add=TRUE)
+
 					a=0
 					if(plotXY==FALSE){
 						for(k in 1:length(chr)){
@@ -575,7 +598,7 @@ dpi=300
 				if(cir.chr==TRUE){
 					ticks1=1.1*(2*cir.band+RR)*sin(2*pi*(ticks-round(band/2))/TotalN)
 					ticks2=1.1*(2*cir.band+RR)*cos(2*pi*(ticks-round(band/2))/TotalN)
-					if(is.null(cir.chr.labels)){
+					if(is.null(chr.labels)){
 						for(i in 1:length(ticks)){
 						  angle=360*(1-(ticks-round(band/2))[i]/TotalN)
 						  text(ticks1[i],ticks2[i],chr[i],srt=angle,font=2,cex=cex.axis)
@@ -583,13 +606,13 @@ dpi=300
 					}else{
 						for(i in 1:length(ticks)){
 							angle=360*(1-(ticks-round(band/2))[i]/TotalN)
-							text(ticks1[i],ticks2[i],cir.chr.labels[i],srt=angle,font=2,cex=cex.axis)
+							text(ticks1[i],ticks2[i],chr.labels[i],srt=angle,font=2,cex=cex.axis)
 						}
 					}
 				}else{
-					ticks1=1.07*(RR+cir.band)*sin(2*pi*(ticks-round(band/2))/TotalN)
-					ticks2=1.07*(RR+cir.band)*cos(2*pi*(ticks-round(band/2))/TotalN)
-					if(is.null(cir.chr.labels)){
+					ticks1=1.0*(RR+cir.band)*sin(2*pi*(ticks-round(band/2))/TotalN)
+					ticks2=1.0*(RR+cir.band)*cos(2*pi*(ticks-round(band/2))/TotalN)
+					if(is.null(chr.labels)){
 						for(i in 1:length(ticks)){
 						
 							#adjust the angle of labels of circle plot
@@ -599,13 +622,13 @@ dpi=300
 					}else{
 						for(i in 1:length(ticks)){
 							angle=360*(1-(ticks-round(band/2))[i]/TotalN)
-							text(ticks1[i],ticks2[i],cir.chr.labels[i],srt=angle,font=2,cex=cex.axis)
+							text(ticks1[i],ticks2[i],chr.labels[i],srt=angle,font=2,cex=cex.axis)
 						}
 					}	
 				}
 			}
 		}
-		if(fill.output==TRUE) dev.off()
+		if(file.output==TRUE) dev.off()
 		#print("Circular-Manhattan has been finished!",quote=F)
 	}
 
@@ -615,14 +638,14 @@ dpi=300
 			for(i in 1:R){
 				colx=col[i,]
 				colx=colx[!is.na(colx)]
-				print(paste("Rectangular-Plotting ",taxa[i],"...",sep=""),quote=F)
-					if(fill.output==TRUE){
-						if(fill=="jpg")	jpeg(paste("Rectangular-Manhattan.",taxa[i],".jpg",sep=""), width = 14*dpi,height=5*dpi,res=dpi,quality = 100)
-						if(fill=="pdf")	pdf(paste("Rectangular-Manhattan.",taxa[i],".pdf",sep=""), width = 15,height=6)
-						if(fill=="tiff")	tiff(paste("Rectangular-Manhattan.",taxa[i],".tiff",sep=""), width = 14*dpi,height=5*dpi,res=dpi)
-						par(mar = c(5,6,4,3),xaxs="i")
+				print(paste("Rectangular-Plotting ",taxa[i],"...",sep=""),quote=FALSE)
+					if(file.output==TRUE){
+						if(file=="jpg")	jpeg(paste("Rectangular-Manhattan.",taxa[i],".jpg",sep=""), width = 14*dpi,height=5*dpi,res=dpi,quality = 100)
+						if(file=="pdf")	pdf(paste("Rectangular-Manhattan.",taxa[i],".pdf",sep=""), width = 15,height=6)
+						if(file=="tiff")	tiff(paste("Rectangular-Manhattan.",taxa[i],".tiff",sep=""), width = 14*dpi,height=5*dpi,res=dpi)
+						par(mar = c(5,6,4,3),xaxs=xaxs,yaxs=yaxs)
 					}
-					if(fill.output==FALSE) {
+					if(file.output==FALSE) {
 						dev.new(width = 15, height = 6)
 					}
 					pvalue=pvalueT[,i]
@@ -722,7 +745,11 @@ dpi=300
 								cex.axis=cex.axis,cex.lab=2,font=2,axes=FALSE,xlab=xlab,main=paste("Manhattan plot of",taxa[i]))
 						}
 					}
-					axis(1, at=ticks,cex.axis=cex.axis,font=2,labels=chr)
+					if(is.null(chr.labels)){
+						axis(1, at=c(0,ticks),cex.axis=cex.axis,font=2,labels=c("Chr",chr))
+					}else{
+						axis(1, at=c(0,ticks),cex.axis=cex.axis,font=2,labels=c("Chr",chr.labels))
+					}
 					if(is.null(ylim)){
 						if(Max>1){
 							#print(seq(0,(Max+1),round((Max+1)/10)))
@@ -762,23 +789,24 @@ dpi=300
 							}
 						}
 					}
-				if(fill.output==TRUE)  dev.off()
+				if(box==TRUE) box()
+				if(file.output==TRUE)  dev.off()
 			}
 			#print("Rectangular-Manhattan has been finished!",quote=F)
 		}else{
 			#print("Starting Rectangular-Manhattan plot!",quote=F)
 			#print("Plotting in multiple tracks!",quote=F)
-			if(fill.output==TRUE){
-				if(fill=="jpg")	jpeg(paste("Rectangular-Manhattan.",paste(taxa,collapse="."),".jpg",sep=""), width = 14*dpi,height=5*dpi*R,res=dpi,quality = 100)
-				if(fill=="pdf")	pdf(paste("Rectangular-Manhattan.",paste(taxa,collapse="."),".pdf",sep=""), width = 15,height=6*R)
-				if(fill=="tiff")	tiff(paste("Rectangular-Manhattan.",paste(taxa,collapse="."),".tiff",sep=""), width = 14*dpi,height=5*dpi*R,res=dpi)
+			if(file.output==TRUE){
+				if(file=="jpg")	jpeg(paste("Rectangular-Manhattan.",paste(taxa,collapse="."),".jpg",sep=""), width = 14*dpi,height=5*dpi*R,res=dpi,quality = 100)
+				if(file=="pdf")	pdf(paste("Rectangular-Manhattan.",paste(taxa,collapse="."),".pdf",sep=""), width = 15,height=6*R)
+				if(file=="tiff")	tiff(paste("Rectangular-Manhattan.",paste(taxa,collapse="."),".tiff",sep=""), width = 14*dpi,height=5*dpi*R,res=dpi)
 			}
-			if(fill.output==FALSE){
+			if(file.output==FALSE){
 				dev.new(width = 15, height = 6)
 			}
-			par(mfcol=c(R,1),mar=c(1, 5, 1, 2),oma=c(4,0,3,0),xaxs="i")
+			par(mfcol=c(R,1),mar=c(1, 5, 1, 2),oma=c(4,0,3,0),xaxs=xaxs,yaxs=yaxs)
 			for(i in 1:R){
-				print(paste("Rectangular-Plotting ",taxa[i],"...",sep=""),quote=F)
+				print(paste("Rectangular-Plotting ",taxa[i],"...",sep=""),quote=FALSE)
 				pvalue=pvalueT[,i]
 				logpvalue=logpvalueT[,i]
 				if(plotXY==TRUE){
@@ -879,7 +907,11 @@ dpi=300
 				
 				#add the names of traits on plot  
 				text(ticks[1],Max,labels=taxa[i],adj=0,font=3,cex=1.5)
-				axis(1, at=ticks,cex.axis=cex.axis,font=2,labels=chr)
+				if(is.null(chr.labels)){
+					axis(1, at=c(0,ticks),cex.axis=cex.axis,font=2,labels=c("Chr",chr))
+				}else{
+					axis(1, at=c(0,ticks),cex.axis=cex.axis,font=2,labels=c("Chr",chr.labels))
+				}
 				if(i==1) mtext("Manhattan plot",side=3,padj=-1,font=2,cex=1.5)
 				if(is.null(ylim)){
 					if(Max>1){
@@ -920,7 +952,7 @@ dpi=300
 			
 			#add the labels of X-axis
 			mtext(xlab,side=1,padj=2.5,font=2,cex=1.5)
-			if(fill.output==TRUE) dev.off()
+			if(file.output==TRUE) dev.off()
 			#print("Rectangular-Manhattan has been finished!",quote=F)
 		}
 	}
@@ -928,11 +960,11 @@ dpi=300
 	if("q" %in% plot.type){
 		#print("Starting QQ-plot!",quote=F)
 		for(i in 1:R){
-			print(paste("QQ-Plotting ",taxa[i],"...",sep=""),quote=F)
-			if(fill.output==TRUE){
-				if(fill=="jpg")	jpeg(paste("QQplot.",taxa[i],".jpg",sep=""), width = 5.5*dpi,height=5.5*dpi,res=dpi,quality = 100)
-				if(fill=="pdf")	pdf(paste("QQplot.",taxa[i],".pdf",sep=""), width = 5.5,height=5.5)
-				if(fill=="tiff")	tiff(paste("QQplot.",taxa[i],".tiff",sep=""), width = 5.5*dpi,height=5.5*dpi,res=dpi)
+			print(paste("QQ-Plotting ",taxa[i],"...",sep=""),quote=FALSE)
+			if(file.output==TRUE){
+				if(file=="jpg")	jpeg(paste("QQplot.",taxa[i],".jpg",sep=""), width = 5.5*dpi,height=5.5*dpi,res=dpi,quality = 100)
+				if(file=="pdf")	pdf(paste("QQplot.",taxa[i],".pdf",sep=""), width = 5.5,height=5.5)
+				if(file=="tiff")	tiff(paste("QQplot.",taxa[i],".tiff",sep=""), width = 5.5*dpi,height=5.5*dpi,res=dpi)
 			}else{
 				dev.new(width = 5.5, height = 5.5)
 			}
@@ -959,7 +991,7 @@ dpi=300
 			}else{
 				log.P.values <- P.values
 			}
-			plot(NULL, xlim = c(0,max(log.Quantiles)), cex.axis=cex.axis, cex.lab=1.2,ylim=c(0,max(log.P.values)),xlab =expression(Expected~~-log[10](italic(p))), ylab = expression(Observed~~-log[10](italic(p))), main = paste("QQplot of",taxa[i]))
+			plot(NULL, xlim = c(0,max(log.Quantiles)), font=2, cex.axis=cex.axis, cex.lab=1.2, ylim=c(0,max(log.P.values)),xlab =expression(Expected~~-log[10](italic(p))), ylab = expression(Observed~~-log[10](italic(p))), main = paste("QQplot of",taxa[i]))
 			
 			#calculate the confidence interval of QQ-plot
 			if(conf.int==TRUE){
@@ -978,8 +1010,8 @@ dpi=300
 				polygon(c(log.Quantiles[index],log.Quantiles),c(-log10(c05)[index],-log10(c95)),col=conf.int.col,border=conf.int.col)
 			}
 			
-			abline(a = 0, b = 1, col = threshold.col[1],lwd=2)
-			points(log.Quantiles, log.P.values, col = "Black",pch=19,cex=cex[3])
+			if(!is.null(threshold.col))	abline(a = 0, b = 1, col = threshold.col[1],lwd=2)
+			points(log.Quantiles, log.P.values, col = col[1],pch=19,cex=cex[3])
 			
 			if(!is.null(threshold)){
 				if(sum(threshold!=0)==length(threshold)){
@@ -991,7 +1023,7 @@ dpi=300
 							#cover the points that exceed the threshold with the color "white"
 							points(log.Quantiles[thre.index],log.P.values[thre.index], col = "white",pch=19,cex=cex[3])
 							if(is.null(signal.col)){
-								points(log.Quantiles[thre.index],log.P.values[thre.index],col = "black",pch=signal.pch,cex=signal.cex)
+								points(log.Quantiles[thre.index],log.P.values[thre.index],col = col[1],pch=signal.pch,cex=signal.cex)
 							}else{
 								points(log.Quantiles[thre.index],log.P.values[thre.index],col = signal.col,pch=signal.pch,cex=signal.cex)
 							}
@@ -999,8 +1031,8 @@ dpi=300
 					}
 				}
 			}
-			if(fill.output==TRUE) dev.off()
+			if(file.output==TRUE) dev.off()
 		}
 	}
-	print(paste("The plots have been stored in ","[",getwd(),"]",sep=""),quote=F)
+	print(paste("The plots have been stored in ","[",getwd(),"]",sep=""),quote=FALSE)
 }

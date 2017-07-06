@@ -1,8 +1,8 @@
 Package: CMplot
 Type: Package
 Title: Circle Manhattan Plot
-Version: 3.2.0
-Date: 2017-03-20
+Version: 3.2.1
+Date: 2017-07-07
 Author: LiLin-Yin
 Maintainer: LiLin-Yin <ylilin@163.com>
 Description: Manhattan plot, a type of scatter plot, was widely used to display the association results. However, it is usually time-consuming and laborious for a
@@ -12,8 +12,8 @@ Description: Manhattan plot, a type of scatter plot, was widely used to display 
  plot, association results from multiple traits can be compared interactively, thereby to reveal both similarities and differences between signals.
 License: GPL (>= 2)
 Depends: R(>= 2.10)
-URL: https://github.com/YinLiLin/R-CMplot/blob/master/CMplot.r
+URL: https://github.com/YinLiLin/R-CMplot
 NeedsCompilation: no
-Packaged: 2017-03-20 03:10:55 UTC; acer
+Packaged: 2017-07-06 03:55:27 UTC; acer
 Repository: CRAN
-Date/Publication: 2017-03-20 05:22:09 UTC
+Date/Publication: 2017-07-06 05:03:36 UTC

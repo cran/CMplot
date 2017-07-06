@@ -11,19 +11,19 @@ Circle Manhattan Plot
  integration of results from different Genome-wide association study researches. Circle Manhattan Plot is the first open R package that can lay out 
  Genome-wide association study P-value results in QQ-plot, both traditional rectangular patterns and novel circular ones. United in only one bull's eye style 
  plot, association results from multiple traits can be compared interactively, thereby to reveal both similarities and differences between signals.
- The recently source codes: \emph{\url{https://github.com/YinLiLin/R-CMplot/blob/master/CMplot.r}}
+ The detail user manual for CMplot: \emph{\url{https://github.com/YinLiLin/R-CMplot}}
  }
 \usage{
 CMplot(Pmap, col = c("dodgerblue1", "olivedrab3", "darkgoldenrod1", "red"), pch = 19,
 	  band = 1, cir.band = 0.5, H = 1.5, ylim = NULL, cex.axis = 1, plot.type = "b",
-	  multracks = FALSE, cex = c(0.5,1,1),r = 0.3, xlab = "Chromosome",
+	  multracks = FALSE, cex = c(0.5,1,1),r = 0.3, xlab = "Chromosome",bin.max=NULL,
 	  ylab = expression(-log[10](italic(p))),xaxs = "i",yaxs = "r",outward = FALSE, 
 	  threshold = NULL, threshold.col="red", threshold.lwd = 1, threshold.lty = 2,
 	  amplify = TRUE,chr.labels = NULL,signal.cex = 1.5, signal.pch = 19, 
 	  signal.col="red", signal.line = 1, cir.chr = TRUE,cir.chr.h = 0.6,
-	  cir.chr.col = "black", cir.legend = TRUE, cir.legend.cex = 0.8,
+	  cir.chr.col = "black", cir.legend = TRUE, cir.legend.cex = 0.8, bin.size=1e6,
 	  cir.legend.col = "grey45", LOG10 = TRUE, box=FALSE, conf.int = TRUE,
-	  conf.int.col = "grey", file.output = TRUE, file = "jpg", dpi = 300)
+	  conf.int.col = "grey", file.output = TRUE, file = "jpg", dpi = 300, memo="")
 }
 \arguments{
   \item{Pmap}{
@@ -33,6 +33,12 @@ a dataframe, at least four columns. The first column is the name of SNP, the sec
 a vector or a matrix, if "col" equals to a vector, each circle use the same colors, it means that the same chromosome is drewed in the same color, the colors are not fixed, one, two, three or more colors can be used, if the length of the "col" is shorter than the length the chromosome, then colors will be applied circularly. 
 if "col" equals to a matrix, the row is the number of circles(traits), the columns are the colors that users want to use for different circles, so each circle can be plotted in different number of colors, the missing value can be replaced by NA. For example: 
 col=matrix(c("grey30","grey60",NA,"red","blue","green","orange",NA,NA),3,3,byrow=T).
+}
+  \item{bin.size}{
+the size of bin for SNP_density plot.
+}
+  \item{bin.max}{
+the max value of legend of SNP_density plot, the bin whose SNP number is bigger than 'bin.max' will be use the same color.
 }
   \item{pch}{
 a number, the type for the points, is the same with "pch" in <plot>.
@@ -148,13 +154,16 @@ a character, users can choose the different output formats of plot, so for, "jpg
   \item{dpi}{
 a number, the picture element for .jpg and .tiff files. The default is 300.
 }
+  \item{memo}{
+add a character to the output file name.
+}
 }
 \details{
 \tabular{ll}{
 Package: \tab CMplot\cr
 Type: \tab Package\cr
-Version: \tab 3.2.0\cr
-Date: \tab 2017-03-20\cr
+Version: \tab 3.2.1\cr
+Date: \tab 2017-07-07\cr
 License: \tab GPL(>=2)\cr
 }
 }

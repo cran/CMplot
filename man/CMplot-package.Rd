@@ -14,16 +14,17 @@ Circle Manhattan Plot
  The detail user manual for CMplot: \emph{\url{https://github.com/YinLiLin/R-CMplot}}
  }
 \usage{
-CMplot(Pmap, col = c("dodgerblue1", "olivedrab3", "darkgoldenrod1", "red"), pch = 19,
-	  band = 1, cir.band = 0.5, H = 1.5, ylim = NULL, cex.axis = 1, plot.type = "b",
-	  multracks = FALSE, cex = c(0.5,1,1),r = 0.3, xlab = "Chromosome",bin.max=NULL,
-	  ylab = expression(-log[10](italic(p))),xaxs = "i",yaxs = "r",outward = FALSE, 
-	  threshold = NULL, threshold.col="red", threshold.lwd = 1, threshold.lty = 2,
-	  amplify = TRUE,chr.labels = NULL,signal.cex = 1.5, signal.pch = 19, 
-	  signal.col="red", signal.line = 1, cir.chr = TRUE,cir.chr.h = 0.6,
-	  cir.chr.col = "black", cir.legend = TRUE, cir.legend.cex = 0.8, bin.size=1e6,
-	  cir.legend.col = "grey45", LOG10 = TRUE, box=FALSE, conf.int = TRUE,
-	  conf.int.col = "grey", file.output = TRUE, file = "jpg", dpi = 300, memo="")
+CMplot(Pmap, col=c("dodgerblue1", "olivedrab3", "darkgoldenrod1", "red"),
+	  bin.size=1e6, bin.max=NULL, pch=19, band=1, cir.band=0.5, H=1.5,
+	  ylim=NULL, cex.axis=1, plot.type="b", multracks=FALSE, cex=c(0.5,1,1),
+	  r=0.3, xlab="Chromosome", ylab=expression(-log[10](italic(p))), xaxs="i",
+	  yaxs="r", outward=FALSE, threshold = NULL, threshold.col="red",
+	  threshold.lwd=1, threshold.lty=2, amplify= TRUE, chr.labels=NULL,
+	  signal.cex = 1.5, signal.pch = 19, signal.col="red", signal.line=1,
+	  cir.chr=TRUE, cir.chr.h=1.5, cir.chr.col="black", cir.legend=TRUE,
+	  cir.legend.cex=0.6, cir.legend.col=c("darkgreen", "yellow", "red"),
+	  LOG10=TRUE, box=FALSE, conf.int.col="grey", file.output=TRUE,
+	  file="jpg", dpi=300, memo="")
 }
 \arguments{
   \item{Pmap}{
@@ -59,7 +60,7 @@ a vector, the range of Y-axis when plotting the two type of Manhattans, is the s
 a number, controls the size of numbers of X-axis and the size of labels of circle plot.
 }
   \item{plot.type}{
-a character or vector, only "d", "c", "m", "q" or "b" can be used. if plot.type="c", SNP density will be plotted; if plot.type="c", only circle-Manhattan plot will be plotted; if plot.type="m",only Manhattan plot will be plotted; if plot.type="q",only Q-Q plot will be plotted;if plot.type="b", both circle-Manhattan, Manhattan and Q-Q plots will be plotted; if plot.type=c("m","q"), Both Manhattan and Q-Q plots will be plotted.
+a character or vector, only "d", "c", "m", "q" or "b" can be used. if plot.type="d", SNP density will be plotted; if plot.type="c", only circle-Manhattan plot will be plotted; if plot.type="m",only Manhattan plot will be plotted; if plot.type="q",only Q-Q plot will be plotted;if plot.type="b", both circle-Manhattan, Manhattan and Q-Q plots will be plotted; if plot.type=c("m","q"), Both Manhattan and Q-Q plots will be plotted.
 }
   \item{multracks}{
 a logical,if multracks=FALSE, plotting multiple rectangular Manhattan plots on multiple tracks, if it is TRUE, all Manhattan plots will be plotted in only one track.
@@ -86,7 +87,7 @@ a character, The style of axis interval calculation to be used for the y-axis. S
 logical, if outward=TRUE,then all points will be plotted from inside to outside.
 }
   \item{threshold}{
-a number or vector, users can adjust the significant level they want,for example c(0.05,0.01). Bonfferoni adjustment method is used in default(threshold/N, N is the number of markers), more than one significant line can be added on the plots, if threshold=0 or NULL, then the threshold line will not be added.
+a number or vector, the significant threshold. For example, Bonfferoni adjustment method: threshold=0.01/nrow(Pmap). More than one significant line can be added on the plots, if threshold=0 or NULL, then the threshold line will not be added.
 }
   \item{threshold.col}{
 a character or vector, the colour for the line of threshold levels.
@@ -122,7 +123,8 @@ logical, a boundary represents chromosome, the default is TRUE.
 a number, the width for the boundary, if cir.chr=FALSE, then this parameter will be useless.
 }
   \item{cir.chr.col}{
-a character, the colour for the boundary, only one colour is allowed, if cir.chr.col=NULL, then the default colours are the same with the parameter "col".
+a character or vector, the colour for the boundary. If the length of parameter 'cir.chr.col' is not equal to 1, SNP density that counts 
+   the number ofSNP within given size('bin.size') will be plotted around the circle. If cir.chr.col=NULL, then the default colours are the same with the parameter "col".
 }
   \item{cir.legend}{
 logical, whether to add the legend of each circle.
@@ -139,10 +141,7 @@ logical, whether to change the p-value into log10(p-value).
  \item{box}{
 logical, this function draws a box around the current Manhattan plot.
 }
-  \item{conf.int}{
-logical, whether to drew the confidence interval on QQ-plot.
-}
-  \item{conf.int.col}{
+ \item{conf.int.col}{
 a character, the color of the confidence interval on QQ-plot.
 }
  \item{file.output}{
@@ -162,8 +161,8 @@ add a character to the output file name.
 \tabular{ll}{
 Package: \tab CMplot\cr
 Type: \tab Package\cr
-Version: \tab 3.2.1\cr
-Date: \tab 2017-07-07\cr
+Version: \tab 3.3.0\cr
+Date: \tab 2017-12-12\cr
 License: \tab GPL(>=2)\cr
 }
 }
@@ -180,8 +179,9 @@ Maintainer: LiLin-Yin <\bold{ylilin@163.com}>
 
 #plot rectangular Manhattan only one trait with 20000 markers:
 data(pig60K)                        
-CMplot(pig60K[1:20000,c(1:4)],plot.type="m",threshold=c(0.01,0.05),
-		threshold.col=c('red','orange'),multracks=TRUE)
+CMplot(pig60K[sample(1:nrow(pig60K), 10000),c(1:4)],plot.type="m",
+	  threshold=c(0.01,0.05)/nrow(pig60K),threshold.col=c('red','orange'),
+	  multracks=TRUE)
  
 ################################################################################
 #plot circular Manhattan for all traits with all markers:                      #

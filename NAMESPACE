@@ -1,5 +1,5 @@
 exportPattern("^[[:alpha:]]+")
-importFrom("grDevices", "colorRampPalette", "dev.off", "dev.new", "jpeg", "pdf", "tiff")
+importFrom("grDevices", "colorRampPalette", "dev.list", "dev.off", "dev.new", "jpeg", "pdf", "tiff")
 importFrom("graphics","abline","axis","legend","segments","curve","lines", "par", "plot","points","box","polygon", "text","mtext")
 importFrom("stats", "na.omit", "qbeta")
 importFrom("utils", "packageVersion")

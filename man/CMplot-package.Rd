@@ -14,15 +14,15 @@ Circle Manhattan Plot
  The detail user manual for CMplot: \emph{\url{https://github.com/YinLiLin/R-CMplot}}
  }
 \usage{
-CMplot(Pmap, col=c("dodgerblue1", "olivedrab3", "darkgoldenrod1", "red"),
+CMplot(Pmap, col=c("#377EB8", "#4DAF4A", "#984EA3", "#FF7F00"),
 	  bin.size=1e6, bin.max=NULL, pch=19, band=1, cir.band=0.5, H=1.5,
 	  ylim=NULL, cex.axis=1, plot.type="b", multracks=FALSE, cex=c(0.5,1,1),
 	  r=0.3, xlab="Chromosome", ylab=expression(-log[10](italic(p))), xaxs="i",
 	  yaxs="r", outward=FALSE, threshold = NULL, threshold.col="red",
 	  threshold.lwd=1, threshold.lty=2, amplify= TRUE, chr.labels=NULL,
 	  signal.cex = 1.5, signal.pch = 19, signal.col="red", signal.line=1,
-	  cir.chr=TRUE, cir.chr.h=1.5, cir.chr.col="black", cir.legend=TRUE,
-	  cir.legend.cex=0.6, cir.legend.col=c("darkgreen", "yellow", "red"),
+	  cir.chr=TRUE, cir.chr.h=1.5, chr.den.col=c("darkgreen", "yellow", "red")
+	  , cir.legend=TRUE, cir.legend.cex=0.6, cir.legend.col="black",
 	  LOG10=TRUE, box=FALSE, conf.int.col="grey", file.output=TRUE,
 	  file="jpg", dpi=300, memo="")
 }
@@ -122,9 +122,9 @@ logical, a boundary represents chromosome, the default is TRUE.
   \item{cir.chr.h}{
 a number, the width for the boundary, if cir.chr=FALSE, then this parameter will be useless.
 }
-  \item{cir.chr.col}{
-a character or vector, the colour for the boundary. If the length of parameter 'cir.chr.col' is not equal to 1, SNP density that counts 
-   the number ofSNP within given size('bin.size') will be plotted around the circle. If cir.chr.col=NULL, then the default colours are the same with the parameter "col".
+  \item{chr.den.col}{
+a character or vector or NULL, the colour for the SNP density. If the length of parameter 'chr.den.col' is bigger than 1, SNP density that counts 
+   the number of SNP within given size('bin.size') will be plotted around the circle. If chr.den.col=NULL, then the default colours are the same with the parameter "col" for circle.
 }
   \item{cir.legend}{
 logical, whether to add the legend of each circle.
@@ -161,8 +161,8 @@ add a character to the output file name.
 \tabular{ll}{
 Package: \tab CMplot\cr
 Type: \tab Package\cr
-Version: \tab 3.3.0\cr
-Date: \tab 2017-12-12\cr
+Version: \tab 3.3.1\cr
+Date: \tab 2018-01-01\cr
 License: \tab GPL(>=2)\cr
 }
 }
@@ -181,7 +181,7 @@ Maintainer: LiLin-Yin <\bold{ylilin@163.com}>
 data(pig60K)                        
 CMplot(pig60K[sample(1:nrow(pig60K), 10000),c(1:4)],plot.type="m",
 	  threshold=c(0.01,0.05)/nrow(pig60K),threshold.col=c('red','orange'),
-	  multracks=TRUE)
+	  multracks=FALSE, chr.den.col=NULL)
  
 ################################################################################
 #plot circular Manhattan for all traits with all markers:                      #

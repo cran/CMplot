@@ -11,7 +11,6 @@ Circle Manhattan Plot
  integration of results from different Genome-wide association study researches. Circle Manhattan Plot is the first open R package that can lay out 
  Genome-wide association study P-value results in QQ-plot, both traditional rectangular patterns and novel circular ones. United in only one bull's eye style 
  plot, association results from multiple traits can be compared interactively, thereby to reveal both similarities and differences between signals.
- The detail user manual for CMplot: \emph{\url{https://github.com/YinLiLin/R-CMplot}}
  }
 \usage{
 CMplot(Pmap, col=c("#377EB8", "#4DAF4A", "#984EA3", "#FF7F00"),
@@ -24,7 +23,7 @@ CMplot(Pmap, col=c("#377EB8", "#4DAF4A", "#984EA3", "#FF7F00"),
 	  cir.chr=TRUE, cir.chr.h=1.5, chr.den.col=c("darkgreen", "yellow", "red")
 	  , cir.legend=TRUE, cir.legend.cex=0.6, cir.legend.col="black",
 	  LOG10=TRUE, box=FALSE, conf.int.col="grey", file.output=TRUE,
-	  file="jpg", dpi=300, memo="")
+	  file="jpg", dpi=300, memo="", verbose=TRUE)
 }
 \arguments{
   \item{Pmap}{
@@ -156,13 +155,16 @@ a number, the picture element for .jpg and .tiff files. The default is 300.
   \item{memo}{
 add a character to the output file name.
 }
+ \item{verbose}{
+whether to print the reminder.
+}
 }
 \details{
 \tabular{ll}{
 Package: \tab CMplot\cr
 Type: \tab Package\cr
-Version: \tab 3.3.1\cr
-Date: \tab 2018-01-01\cr
+Version: \tab 3.3.3\cr
+Date: \tab 2018-12-11\cr
 License: \tab GPL(>=2)\cr
 }
 }

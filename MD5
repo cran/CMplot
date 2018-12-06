@@ -1,10 +1,10 @@
-6c47a09f4ecd4574ed73543bcf5c68e1 *DESCRIPTION
+9eca863c3aeb54ec02399fbc64c62b94 *DESCRIPTION
 8afe09b62dab8010e0d51b450b1ea5c5 *NAMESPACE
-a98debf55a6dc4a6c28582bd9eec4b0b *R/CMplot.r
+6351e1d2c6577387c3910fde1915c157 *R/CMplot.r
 732e0df0a00cd6e5905d889dcfe10192 *R/zzz.R
 bcbbad1a0cb1d5185ce5058b27a00d4f *data/cattle50K.rda
 91bc54df811de7057fce98a9cf308e5f *data/datalist
 b78c944a0757ec38fb78561a0969a3d0 *data/pig60K.rda
-d0e708b51e60d4faee71a9c23cad1961 *man/CMplot-package.Rd
+cbba41ea130ae8dffaeaad322e78baa6 *man/CMplot-package.Rd
 5ae78eb15d72efb39add31e7b675814b *man/cattle50K.Rd
 6c5104c9d66ef2115dbdbe6fe6a7c6e6 *man/pig60K.Rd

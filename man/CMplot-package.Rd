@@ -9,22 +9,27 @@ Circle Manhattan Plot
  Manhattan plot, a type of scatter plot, was widely used to display the association results. However, it is usually time-consuming and laborious for a non-specialist user to write scripts and adjust parameters of an elaborate plot. Moreover, the ever-growing traits measured have necessitated the 
  integration of results from different Genome-wide association study researches. Circle Manhattan Plot is the first open R package that can lay out Genome-wide association study P-value results in QQ-plot, both traditional rectangular patterns and novel circular ones. United in only one bull's eye style 
  plot, association results from multiple traits can be compared interactively, thereby to reveal both similarities and differences between signals.
+ Additional functions include: hightlight signals, a group of SNPs, chromosome visualization and candidate genes around SNPs.
  }
 \usage{
 CMplot(Pmap, col=c("#4197d8", "#f8c120", "#413496", "#495226",
     "#d60b6f", "#e66519", "#d581b7", "#83d3ad", "#7c162c", "#26755d"),
-    bin.size=1e6, bin.range=NULL, pch=19, band=1, H=1.5, ylim=NULL,
-    cex.axis=1, lwd.axis=1.5, cex.lab=1.5, plot.type="b", multracks=FALSE,
-    cex=c(0.5,1,1), r=0.3, xlab="Chromosome",
-    ylab=expression(-log[10](italic(p))), xaxs="i", yaxs="r", 
-    outward=FALSE, threshold = NULL, threshold.col="red", threshold.lwd=1,
-    threshold.lty=2, amplify= TRUE, signal.cex = 1.5, signal.pch = 19,
-    signal.col="red", signal.line=1, highlight=NULL, highlight.cex=1.5,
-    highlight.pch=19, highlight.col="green", chr.labels=NULL,
-    chr.den.col="black", cir.band=1, cir.chr=TRUE, cir.chr.h=1.5,
+    bin.size=1e6, bin.range=NULL, pch=19, type="p", band=1, H=1.5, 
+    ylim=NULL, cex.axis=1, lwd.axis=1.5, cex.lab=1.5, plot.type="b",
+    multracks=FALSE, cex=c(0.5,1,1), r=0.3, xlab="Chromosome",
+    ylab=expression(-log[10](italic(p))), xline=3, yline=3, xaxs="i",
+    yaxs="r", outward=FALSE, threshold = NULL, threshold.col="red", 
+    threshold.lwd=1, threshold.lty=2, amplify= TRUE, signal.cex = 1.5,
+    signal.pch = 19, signal.col=NULL, signal.line=1, highlight=NULL,
+    highlight.cex=1, highlight.pch=19, highlight.col="red", 
+    highlight.text=NULL, highlight.text.col="black",
+    highlight.text.cex=1, highlight.text.xadj=NULL,
+    highlight.text.yadj=NULL, highlight.text.font=3,chr.labels=NULL, 
+    chr.den.col="black", cir.band=1, cir.chr=TRUE, cir.chr.h=1.5, 
     cir.legend=TRUE, cir.legend.cex=0.6, cir.legend.col="black",
-    LOG10=TRUE, box=FALSE, conf.int=TRUE, file.output=TRUE, file="jpg",
-    dpi=300, height=NULL, width=NULL, memo="", verbose=TRUE)
+    LOG10=TRUE, box=FALSE, conf.int=TRUE, file.output=TRUE, 
+    file=c("jpg","pdf","tiff"), dpi=300, height=NULL, width=NULL,
+    memo="", verbose=TRUE)
 }
 \arguments{
   \item{Pmap}{
@@ -41,7 +46,10 @@ the size of bin for SNP_density plot.
 a vector, c(min, max). The min/max value of legend of SNP_density plot, the bin whose SNP number is smaller/bigger than 'bin.range' will be use the same color.
 }
   \item{pch}{
-a number, the type for the points or for traits of multi-traits Manhattan plot, is the same with "pch" in <plot>.
+a number, the shape for the points or for traits of multi-traits Manhattan plot, is the same with "pch" in <plot>.
+}
+  \item{type}{
+a character, could be "p"(point), "l"(line), "h"(vertical lines) and so on, is the same with "type" in <plot>.
 }
   \item{band}{
 a number, the space between chromosomes, the default is 1(if the band equals to 0, then there would be no space between chromosomes).
@@ -78,6 +86,12 @@ a character, the labels for x axis.
 }
   \item{ylab}{
 a character, the labels for y axis.
+}
+  \item{xline}{
+the distance between xlab and x-axis.
+}
+  \item{yline}{
+the distance between ylab and y-axis.
 }
   \item{xaxs}{
 a character, The style of axis interval calculation to be used for the x-axis. Possible values are "r", "i", "e", "s", "d". The styles are generally controlled by the range of data or xlim, if given.
@@ -116,16 +130,34 @@ a character, if amplify=TRUE, users can set the colour of significant points, if
 a number, the width of the lines of significant SNPs cross the circle.
 }
   \item{highlight}{
-a vector, names of SNPs which need to be highlighted.
+a vector or list, names of SNPs which need to be highlighted. vector for single trait and list for multiple traits.
 }
   \item{highlight.cex}{
-a number or vector, the size of points for SNPs which need to be highlighted.
+a vector or list, the size of points for SNPs which need to be highlighted.
 }
   \item{highlight.pch}{
-a number or vector, the pch of points for SNPs which need to be highlighted.
+a vector or list, the pch of points for SNPs which need to be highlighted.
 }
   \item{highlight.col}{
-a number or vector, the col of points for SNPs which need to be highlighted.
+a vector or list, the col of points for SNPs which need to be highlighted.
+}
+  \item{highlight.text}{
+a vector or list, the text which would be added around the highlighted SNPs.
+}
+  \item{highlight.text.col}{
+a vector or list, the color for added text.
+}
+  \item{highlight.text.cex}{
+a value, the size for added text.
+}
+  \item{highlight.text.xadj}{
+value or vecter for single trait or list for multiple traits, -1, 0, 1 limited, control the position of text around the highlighted SNPs, -1(left), 0(center), 1(right).
+}
+  \item{highlight.text.yadj}{
+value or vecter for single trait or list for multiple traits, -1, 0, 1 limited, control the position of text around the highlighted SNPs, -1(down), 0(center), 1(up).
+}
+  \item{highlight.text.font}{
+text font for the highlighted SNPs.
 }
   \item{chr.labels}{
 a vector, the labels for the chromosomes of density plot and circle-Manhattan plot.
@@ -186,8 +218,8 @@ whether to print the reminder.
 \tabular{ll}{
 Package: \tab CMplot\cr
 Type: \tab Package\cr
-Version: \tab 3.4.0\cr
-Date: \tab 2019-09-01\cr
+Version: \tab 3.5.1\cr
+Date: \tab 2019-12-11\cr
 License: \tab GPL(>=2)\cr
 }
 }

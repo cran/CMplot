@@ -1,5 +1,5 @@
 exportPattern("^[[:alpha:]]+")
 importFrom("grDevices", "col2rgb", "rgb", "colorRampPalette", "dev.list", "dev.off", "dev.new", "jpeg", "pdf", "tiff")
-importFrom("graphics","abline","axis","legend","segments","curve","lines", "par", "plot","points","box","polygon", "text","mtext","rect","arrows","strwidth","strheight")
+importFrom("graphics","abline","axis","legend","segments","curve","lines", "par", "title", "plot","points","box","polygon", "text","mtext","rect","arrows","strwidth","strheight")
 importFrom("stats", "na.omit", "qbeta", "runif", "sd")
 importFrom("utils", "packageVersion", "tail")

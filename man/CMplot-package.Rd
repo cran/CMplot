@@ -9,27 +9,27 @@ Circle Manhattan Plot
  Manhattan plot, a type of scatter plot, was widely used to display the association results. However, it is usually time-consuming and laborious for a non-specialist user to write scripts and adjust parameters of an elaborate plot. Moreover, the ever-growing traits measured have necessitated the 
  integration of results from different Genome-wide association study researches. Circle Manhattan Plot is the first open R package that can lay out Genome-wide association study P-value results in QQ-plot, both traditional rectangular patterns and novel circular ones. United in only one bull's eye style 
  plot, association results from multiple traits can be compared interactively, thereby to reveal both similarities and differences between signals.
- Additional functions include: hightlight signals, a group of SNPs, chromosome visualization and candidate genes around SNPs.
+ Additional functions include: highlight signals, a group of SNPs, chromosome visualization and candidate genes around SNPs.
  }
 \usage{
 CMplot(Pmap, col=c("#4197d8", "#f8c120", "#413496", "#495226",
     "#d60b6f", "#e66519", "#d581b7", "#83d3ad", "#7c162c", "#26755d"),
     bin.size=1e6, bin.range=NULL, pch=19, type="p", band=1, H=1.5, 
     ylim=NULL, cex.axis=1, lwd.axis=1.5, cex.lab=1.5, plot.type="b",
-    multracks=FALSE, cex=c(0.5,1,1), r=0.3, xlab="Chromosome",
-    ylab=expression(-log[10](italic(p))), xline=3, yline=3, xaxs="i",
-    yaxs="r", outward=FALSE, threshold = NULL, threshold.col="red", 
-    threshold.lwd=1, threshold.lty=2, amplify= TRUE, signal.cex = 1.5,
-    signal.pch = 19, signal.col=NULL, signal.line=1, highlight=NULL,
-    highlight.cex=1, highlight.pch=19, highlight.col="red", 
-    highlight.text=NULL, highlight.text.col="black",
-    highlight.text.cex=1, highlight.text.xadj=NULL,
-    highlight.text.yadj=NULL, highlight.text.font=3,chr.labels=NULL, 
+    multracks=FALSE, cex=c(0.5,1,1), r=0.3, outward=FALSE,
+    ylab=expression(-log[10](italic(p))), ylab.pos=3, mar = c(3,6,3,3),
+    threshold = NULL, threshold.col="red", threshold.lwd=1, 
+    threshold.lty=2, amplify= TRUE, signal.cex = 1.5, signal.pch = 19, 
+    signal.col=NULL, signal.line=2, highlight=NULL, highlight.cex=1, 
+    highlight.pch=19, highlight.type="p", highlight.col="red", 
+    highlight.text=NULL, highlight.text.col="black", highlight.text.cex=1, 
+    highlight.text.xadj=NULL, highlight.text.yadj=NULL, 
+    highlight.text.font=3, chr.labels=NULL, chr.labels.angle=0, 
     chr.den.col="black", cir.band=1, cir.chr=TRUE, cir.chr.h=1.5, 
     cir.legend=TRUE, cir.legend.cex=0.6, cir.legend.col="black",
-    LOG10=TRUE, box=FALSE, conf.int=TRUE, file.output=TRUE, 
-    file=c("jpg","pdf","tiff"), dpi=300, height=NULL, width=NULL,
-    memo="", verbose=TRUE)
+    LOG10=TRUE, box=FALSE, conf.int=TRUE, conf.int.col=NULL, 
+    file.output=TRUE, file=c("jpg","pdf","tiff"), dpi=300, height=NULL, 
+    width=NULL, memo="", main="", main.cex=1.5, main.font=2, verbose=TRUE)
 }
 \arguments{
   \item{Pmap}{
@@ -43,7 +43,7 @@ col=matrix(c("grey30","grey60",NA,"red","blue","green","orange",NA,NA),3,3,byrow
 the size of bin for SNP_density plot.
 }
   \item{bin.range}{
-a vector, c(min, max). The min/max value of legend of SNP_density plot, the bin whose SNP number is smaller/bigger than 'bin.range' will be use the same color.
+a vector, c(min, max). The min/max value of legend of SNP_density plot, the bin whose SNP number is smaller/bigger than 'bin.range' will use the same color.
 }
   \item{pch}{
 a number, the shape for the points or for traits of multi-traits Manhattan plot, is the same with "pch" in <plot>.
@@ -61,10 +61,10 @@ a number, the height for each circle, each circle represents a trait, the defaul
 a vector, the range of Y-axis when plotting the two type of Manhattan plots, is the same with "ylim" in <plot>.
 }
   \item{cex.axis}{
-a number, controls the size of ticks' numbers of X/Y-axis and the size of labels of circle plot.
+a number, controls the size of ticks labels of X/Y-axis and the size of chromosome labels of circle plot.
 }
   \item{lwd.axis}{
-a number, controls the width of X/Y-axis lines.
+a number, controls the thickness of X/Y-axis lines.
 }
   \item{cex.lab}{
 a number, controls the size of labels of X/Y-axis.
@@ -73,7 +73,7 @@ a number, controls the size of labels of X/Y-axis.
 a character or vector, only "d", "c", "m", "q" or "b" can be used. if plot.type="d", SNP density will be plotted; if plot.type="c", only circle-Manhattan plot will be plotted; if plot.type="m",only Manhattan plot will be plotted; if plot.type="q",only Q-Q plot will be plotted;if plot.type="b", both circle-Manhattan, Manhattan and Q-Q plots will be plotted; if plot.type=c("m","q"), Both Manhattan and Q-Q plots will be plotted.
 }
   \item{multracks}{
-a logical,if multracks=FALSE, all Manhattan plots will be drew in separated files, if it is TRUE, all Manhattan plots will be plotted in only one file.
+a logical,if multracks=FALSE, all Manhattan plots will be drew in separated files, if it is TRUE, all Manhattan plots will be plotted in one file.
 }
   \item{cex}{
 a number or a vector, the size for the points, is the same with "size" in <plot>, and if it is a vector, the first number controls the size of points in circle plot(the default is 0.5), the second number controls the size of points in Manhattan plot(the default is 1), the third number controls the size of points in Q-Q plot(the default is 1)
@@ -81,38 +81,29 @@ a number or a vector, the size for the points, is the same with "size" in <plot>
   \item{r}{
 a number, the radius for the circle(the inside radius), the default is 1.
 }
-  \item{xlab}{
-a character, the labels for x axis.
+  \item{outward}{
+logical, if outward=TRUE,then all points will be plotted from inside to outside for circular Manhattan plot.
 }
   \item{ylab}{
 a character, the labels for y axis.
 }
-  \item{xline}{
-the distance between xlab and x-axis.
+  \item{ylab.pos}{
+the distance between ylab and y axis.
 }
-  \item{yline}{
-the distance between ylab and y-axis.
-}
-  \item{xaxs}{
-a character, The style of axis interval calculation to be used for the x-axis. Possible values are "r", "i", "e", "s", "d". The styles are generally controlled by the range of data or xlim, if given.
-}
-  \item{yaxs}{
-a character, The style of axis interval calculation to be used for the y-axis. See xaxs above..
-}
-  \item{outward}{
-logical, if outward=TRUE,then all points will be plotted from inside to outside for circular Manhattan plot.
+  \item{mar}{
+the size of white gaps around the plot, 4 values should be provided, indicating the direction of bottom, left, up, and right.
 }
   \item{threshold}{
 a number or vector, the significant threshold. For example, Bonfferoni adjustment method: threshold=0.01/nrow(Pmap). More than one significant line can be added on the plots, if threshold=0 or NULL, then the threshold line will not be added.
 }
   \item{threshold.col}{
-a character or vector, the colour for the line of threshold levels.
+a character or vector, the colour for the line of threshold levels, it can also control the color of the diagonal line of QQplot.
 }
   \item{threshold.lwd}{
-a number or vector, the width for the line of threshold levels.
+a number or vector, the width for the line of threshold levels, it can also control the thickness of the diagonal line of QQplot.
 }
   \item{threshold.lty}{
-a number or vector, the type for the line of threshold levels.
+a number or vector, the type for the line of threshold levels, it can also control the type of the diagonal line of QQplot.
 }
   \item{amplify}{
 logical, CMplot can amplify the significant points, if amplify=T, then the points bigger than the minimal significant level will be amplified, the default: amplify=TRUE.
@@ -127,7 +118,7 @@ a number, if amplify=TRUE, users can set the shape of significant points.
 a character, if amplify=TRUE, users can set the colour of significant points, if signal.col=NULL, then the colors of significant points will not be changed.
 }
   \item{signal.line}{
-a number, the width of the lines of significant SNPs cross the circle.
+a number, the thickness of the lines of significant SNPs cross the circle.
 }
   \item{highlight}{
 a vector or list, names of SNPs which need to be highlighted. vector for single trait and list for multiple traits.
@@ -137,6 +128,9 @@ a vector or list, the size of points for SNPs which need to be highlighted.
 }
   \item{highlight.pch}{
 a vector or list, the pch of points for SNPs which need to be highlighted.
+}
+  \item{highlight.type}{
+a vector or list, the type of points for SNPs which need to be highlighted.
 }
   \item{highlight.col}{
 a vector or list, the col of points for SNPs which need to be highlighted.
@@ -161,6 +155,9 @@ text font for the highlighted SNPs.
 }
   \item{chr.labels}{
 a vector, the labels for the chromosomes of density plot and circle-Manhattan plot.
+}
+  \item{chr.labels.angle}{
+a value, adjust the angle of tick labels of x-axis for Manhattan plot (-90 < chr.labels.angle < 90).
 }
   \item{chr.den.col}{
 a character or vector or NULL, the colour for the SNP density. If the length of parameter 'chr.den.col' is bigger than 1, SNP density that counts the number of SNP within given size('bin.size') will be plotted around the circle. If chr.den.col=NULL, the density bar will not be attached on the bottom of manhattan plot.
@@ -192,6 +189,9 @@ logical, this function draws a box around the current Manhattan plot.
  \item{conf.int}{
 logical, whether to plot confidence interval on QQ-plot.
 }
+ \item{conf.int.col}{
+character or vector, the color of confidence interval of QQplot.
+}
  \item{file.output}{
 a logical, users can choose whether to output the plot results.
 }
@@ -210,16 +210,25 @@ the width of output files.
   \item{memo}{
 add a character to the output file name.
 }
+  \item{main}{
+character of vector, the title of the plot for manhattan plot and qqplot.
+}
+  \item{main.cex}{
+size of title.
+}
+  \item{main.font}{
+font of title.
+}
  \item{verbose}{
-whether to print the reminder.
+whether to print the log information.
 }
 }
 \details{
 \tabular{ll}{
 Package: \tab CMplot\cr
 Type: \tab Package\cr
-Version: \tab 3.5.1\cr
-Date: \tab 2019-12-11\cr
+Version: \tab 3.6.0\cr
+Date: \tab 2020-03-25\cr
 License: \tab GPL(>=2)\cr
 }
 }

@@ -17,19 +17,20 @@ CMplot(Pmap, col=c("#4197d8", "#f8c120", "#413496", "#495226",
     bin.size=1e6, bin.range=NULL, pch=19, type="p", band=1, H=1.5, 
     ylim=NULL, cex.axis=1, lwd.axis=1.5, cex.lab=1.5, plot.type="b",
     multracks=FALSE, cex=c(0.5,1,1), r=0.3, outward=FALSE,
-    ylab=expression(-log[10](italic(p))), ylab.pos=3, mar = c(3,6,3,3),
-    threshold = NULL, threshold.col="red", threshold.lwd=1, 
+    ylab=expression(-log[10](italic(p))), ylab.pos=3, xticks.pos=1,
+    mar = c(3,6,3,3), threshold = NULL, threshold.col="red", threshold.lwd=1, 
     threshold.lty=2, amplify= TRUE, signal.cex = 1.5, signal.pch = 19, 
     signal.col=NULL, signal.line=2, highlight=NULL, highlight.cex=1, 
     highlight.pch=19, highlight.type="p", highlight.col="red", 
     highlight.text=NULL, highlight.text.col="black", highlight.text.cex=1, 
     highlight.text.xadj=NULL, highlight.text.yadj=NULL, 
-    highlight.text.font=3, chr.labels=NULL, chr.labels.angle=0, 
-    chr.den.col="black", cir.band=1, cir.chr=TRUE, cir.chr.h=1.5, 
-    cir.legend=TRUE, cir.legend.cex=0.6, cir.legend.col="black",
-    LOG10=TRUE, box=FALSE, conf.int=TRUE, conf.int.col=NULL, 
-    file.output=TRUE, file=c("jpg","pdf","tiff"), dpi=300, height=NULL, 
-    width=NULL, memo="", main="", main.cex=1.5, main.font=2, verbose=TRUE)
+    highlight.text.font=3, chr.labels=NULL, chr.border=FALSE,
+    chr.labels.angle=0, chr.den.col="black", cir.band=1, cir.chr=TRUE, 
+    cir.chr.h=1.5, cir.legend=TRUE, cir.legend.cex=0.6, 
+    cir.legend.col="black", LOG10=TRUE, box=FALSE, conf.int=TRUE, 
+    conf.int.col=NULL, file.output=TRUE, file=c("jpg","pdf","tiff"), 
+    dpi=300, height=NULL, width=NULL, memo="", main="", main.cex=1.5, 
+    main.font=2, trait.legend.ncol=NULL, verbose=TRUE)
 }
 \arguments{
   \item{Pmap}{
@@ -58,7 +59,7 @@ a number, the space between chromosomes, the default is 1(if the band equals to 
 a number, the height for each circle, each circle represents a trait, the default is 1.
 }
   \item{ylim}{
-a vector, the range of Y-axis when plotting the two type of Manhattan plots, is the same with "ylim" in <plot>.
+vector or list, CMplot will only plot the points among this interval, ylim can be vector or list, if it is a list, different traits can be assigned with different range at y-axis.
 }
   \item{cex.axis}{
 a number, controls the size of ticks labels of X/Y-axis and the size of chromosome labels of circle plot.
@@ -89,6 +90,9 @@ a character, the labels for y axis.
 }
   \item{ylab.pos}{
 the distance between ylab and y axis.
+}
+  \item{xticks.pos}{
+the distance between x ticks labels and x axis.
 }
   \item{mar}{
 the size of white gaps around the plot, 4 values should be provided, indicating the direction of bottom, left, up, and right.
@@ -156,6 +160,9 @@ text font for the highlighted SNPs.
   \item{chr.labels}{
 a vector, the labels for the chromosomes of density plot and circle-Manhattan plot.
 }
+  \item{chr.border}{
+logical, whether to plot the dot line between chromosomes.
+}
   \item{chr.labels.angle}{
 a value, adjust the angle of tick labels of x-axis for Manhattan plot (-90 < chr.labels.angle < 90).
 }
@@ -219,6 +226,9 @@ size of title.
   \item{main.font}{
 font of title.
 }
+ \item{trait.legend.ncol}{
+number of column for the legend of multiple traits manhattan plot.
+}
  \item{verbose}{
 whether to print the log information.
 }
@@ -227,8 +237,8 @@ whether to print the log information.
 \tabular{ll}{
 Package: \tab CMplot\cr
 Type: \tab Package\cr
-Version: \tab 3.6.0\cr
-Date: \tab 2020-03-25\cr
+Version: \tab 3.6.2\cr
+Date: \tab 2020-06-26\cr
 License: \tab GPL(>=2)\cr
 }
 }

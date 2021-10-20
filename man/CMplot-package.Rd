@@ -237,8 +237,8 @@ whether to print the log information.
 \tabular{ll}{
 Package: \tab CMplot\cr
 Type: \tab Package\cr
-Version: \tab 3.6.2\cr
-Date: \tab 2020-06-26\cr
+Version: \tab 3.7.0\cr
+Date: \tab 2021-10-20\cr
 License: \tab GPL(>=2)\cr
 }
 }

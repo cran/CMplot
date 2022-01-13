@@ -25,8 +25,8 @@ CMplot(Pmap, col=c("#4197d8", "#f8c120", "#413496", "#495226",
     highlight.text=NULL, highlight.text.col="black", highlight.text.cex=1, 
     highlight.text.xadj=NULL, highlight.text.yadj=NULL, 
     highlight.text.font=3, chr.labels=NULL, chr.border=FALSE,
-    chr.labels.angle=0, chr.den.col="black", cir.band=1, cir.chr=TRUE, 
-    cir.chr.h=1.5, cir.legend=TRUE, cir.legend.cex=0.6, 
+    chr.labels.angle=0, chr.den.col="black", chr.pos.max=FALSE, cir.band=1, 
+    cir.chr=TRUE, cir.chr.h=1.5, cir.legend=TRUE, cir.legend.cex=0.6, 
     cir.legend.col="black", LOG10=TRUE, box=FALSE, conf.int=TRUE, 
     conf.int.col=NULL, file.output=TRUE, file=c("jpg","pdf","tiff"), 
     dpi=300, height=NULL, width=NULL, memo="", main="", main.cex=1.5, 
@@ -98,7 +98,7 @@ the distance between x ticks labels and x axis.
 the size of white gaps around the plot, 4 values should be provided, indicating the direction of bottom, left, up, and right.
 }
   \item{threshold}{
-a number or vector, the significant threshold. For example, Bonfferoni adjustment method: threshold=0.01/nrow(Pmap). More than one significant line can be added on the plots, if threshold=0 or NULL, then the threshold line will not be added.
+a number or vector or list, the significant threshold. For example, Bonfferoni adjustment method: threshold=0.01/nrow(Pmap), more than one significant line can be added on the plots, if it is a list, each trait can be assigned with different thresholds, if threshold=0 or NULL, then the threshold line will not be added.
 }
   \item{threshold.col}{
 a character or vector, the colour for the line of threshold levels, it can also control the color of the diagonal line of QQplot.
@@ -165,6 +165,9 @@ logical, whether to plot the dot line between chromosomes.
 }
   \item{chr.labels.angle}{
 a value, adjust the angle of tick labels of x-axis for Manhattan plot (-90 < chr.labels.angle < 90).
+}
+  \item{chr.pos.max}{
+logical, whether the physical positions of each chromosome contain the maximum length of the chromosome.
 }
   \item{chr.den.col}{
 a character or vector or NULL, the colour for the SNP density. If the length of parameter 'chr.den.col' is bigger than 1, SNP density that counts the number of SNP within given size('bin.size') will be plotted around the circle. If chr.den.col=NULL, the density bar will not be attached on the bottom of manhattan plot.

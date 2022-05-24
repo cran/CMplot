@@ -14,12 +14,13 @@ Circle Manhattan Plot
 \usage{
 CMplot(Pmap, col=c("#4197d8", "#f8c120", "#413496", "#495226",
     "#d60b6f", "#e66519", "#d581b7", "#83d3ad", "#7c162c", "#26755d"),
-    bin.size=1e6, bin.range=NULL, pch=19, type="p", band=1, H=1.5, 
-    ylim=NULL, cex.axis=1, lwd.axis=1.5, cex.lab=1.5, plot.type="b",
-    multracks=FALSE, cex=c(0.5,1,1), r=0.3, outward=FALSE,
-    ylab=expression(-log[10](italic(p))), ylab.pos=3, xticks.pos=1,
-    mar = c(3,6,3,3), threshold = NULL, threshold.col="red", threshold.lwd=1, 
-    threshold.lty=2, amplify= TRUE, signal.cex = 1.5, signal.pch = 19, 
+    bin.size=1e6, bin.range=NULL, bin.legend.num=10, pch=19, type="p",
+    band=1, H=1.5, ylim=NULL, cex.axis=1, lwd.axis=1.5, cex.lab=1.5,
+    plot.type="b", multracks=FALSE, points.alpha=100L, cex=c(0.5,1,1),
+    r=0.3, outward=FALSE, ylab=expression(-log[10](italic(p))), 
+    ylab.pos=3, xticks.pos=1, mar = c(3,6,3,3), threshold = NULL, 
+    threshold.col="red", threshold.lwd=1, threshold.lty=2, 
+    amplify= TRUE, signal.cex = 1.5, signal.pch = 19, 
     signal.col=NULL, signal.line=2, highlight=NULL, highlight.cex=1, 
     highlight.pch=19, highlight.type="p", highlight.col="red", 
     highlight.text=NULL, highlight.text.col="black", highlight.text.cex=1, 
@@ -45,6 +46,9 @@ the size of bin for SNP_density plot.
 }
   \item{bin.range}{
 a vector, c(min, max). The min/max value of legend of SNP_density plot, the bin whose SNP number is smaller/bigger than 'bin.range' will use the same color.
+}
+  \item{bin.legend.num}{
+a number, the number of breaks of legend for SNP_density plot, the default is 10.
 }
   \item{pch}{
 a number, the shape for the points or for traits of multi-traits Manhattan plot, is the same with "pch" in <plot>.
@@ -75,6 +79,9 @@ a character or vector, only "d", "c", "m", "q" or "b" can be used. if plot.type=
 }
   \item{multracks}{
 a logical,if multracks=FALSE, all Manhattan plots will be drew in separated files, if it is TRUE, all Manhattan plots will be plotted in one file.
+}
+  \item{points.alpha}{
+a number, the transparency of point for multiple traits plot, ranges from '0' (fully transparent) to '255' (opaque).
 }
   \item{cex}{
 a number or a vector, the size for the points, is the same with "size" in <plot>, and if it is a vector, the first number controls the size of points in circle plot(the default is 0.5), the second number controls the size of points in Manhattan plot(the default is 1), the third number controls the size of points in Q-Q plot(the default is 1)
@@ -240,8 +247,8 @@ whether to print the log information.
 \tabular{ll}{
 Package: \tab CMplot\cr
 Type: \tab Package\cr
-Version: \tab 3.7.0\cr
-Date: \tab 2021-10-20\cr
+Version: \tab 4.1.0\cr
+Date: \tab 2022-05-23\cr
 License: \tab GPL(>=2)\cr
 }
 }

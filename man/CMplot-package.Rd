@@ -31,7 +31,8 @@ CMplot(Pmap, col=c("#4197d8", "#f8c120", "#413496", "#495226",
     cir.legend.col="black", LOG10=TRUE, box=FALSE, conf.int=TRUE, 
     conf.int.col=NULL, file.output=TRUE, file=c("jpg","pdf","tiff"), 
     dpi=300, height=NULL, width=NULL, memo="", main="", main.cex=1.5, 
-    main.font=2, trait.legend.ncol=NULL, verbose=TRUE)
+    main.font=2, trait.legend.ncol=NULL, trait.legend.cex=NULL, 
+    trait.legend.pos=c("left","middle","right"),verbose=TRUE)
 }
 \arguments{
   \item{Pmap}{
@@ -48,7 +49,7 @@ the size of bin for SNP_density plot.
 a vector, c(min, max). The min/max value of legend of SNP_density plot, the bin whose SNP number is smaller/bigger than 'bin.range' will use the same color.
 }
   \item{bin.legend.num}{
-a number, the number of breaks of legend for SNP_density plot, the default is 10.
+a number, the number of breaks of legend for SNP density plot, the default is 10.
 }
   \item{pch}{
 a number, the shape for the points or for traits of multi-traits Manhattan plot, is the same with "pch" in <plot>.
@@ -239,6 +240,12 @@ font of title.
  \item{trait.legend.ncol}{
 number of column for the legend of multiple traits manhattan plot.
 }
+ \item{trait.legend.cex}{
+set the size of the legend text of trait name.
+}
+ \item{trait.legend.pos}{
+control the legend position of trait name on the plot, three options "left", "middle", "right" are available.
+}
  \item{verbose}{
 whether to print the log information.
 }
@@ -247,8 +254,8 @@ whether to print the log information.
 \tabular{ll}{
 Package: \tab CMplot\cr
 Type: \tab Package\cr
-Version: \tab 4.1.0\cr
-Date: \tab 2022-05-23\cr
+Version: \tab 4.2.0\cr
+Date: \tab 2022-10-10\cr
 License: \tab GPL(>=2)\cr
 }
 }
@@ -263,7 +270,7 @@ Maintainer: LiLin-Yin <\bold{ylilin@163.com}>
 }
 \examples{
 
-#plot rectangular Manhattan only one trait with 20000 markers:
+#plot rectangular Manhattan only one trait with 10000 markers:
 data(pig60K)                        
 CMplot(pig60K[sample(1:nrow(pig60K), 10000),c(1:4)],plot.type="m",
 	  threshold=c(0.01,0.05)/nrow(pig60K),threshold.col=c('red','orange'),
@@ -273,8 +280,8 @@ CMplot(pig60K[sample(1:nrow(pig60K), 10000),c(1:4)],plot.type="m",
 #plot circular Manhattan for all traits with all markers:                      #
 ################################################################################
 #data(pig60K)                                                                  #         
-#CMplot(pig60K,col=c("gray30","gray60"),r=0.5,plot.type="c",threshold=0.01,    #
-#		signal.col=NULL,outward=TRUE)                                          #
+#CMplot(pig60K,col=c("gray30","gray60"),r=0.5,plot.type="c",                   # 
+#   threshold=0.01/nrow(pig60K),signal.col=NULL,outward=TRUE)                  #
 ################################################################################
 
 }

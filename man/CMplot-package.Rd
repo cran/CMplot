@@ -29,8 +29,8 @@ CMplot(Pmap, col=c("#4197d8", "#f8c120", "#413496", "#495226",
     chr.labels.angle=0, chr.den.col="black", chr.pos.max=FALSE, cir.band=1, 
     cir.chr=TRUE, cir.chr.h=1.5, cir.legend=TRUE, cir.legend.cex=0.6, 
     cir.legend.col="black", LOG10=TRUE, box=FALSE, conf.int=TRUE, 
-    conf.int.col=NULL, file.output=TRUE, file=c("jpg","pdf","tiff"), 
-    dpi=300, height=NULL, width=NULL, memo="", main="", main.cex=1.5, 
+    conf.int.col=NULL, file.output=TRUE, file.name="", file=c("jpg","pdf"
+    ,"tiff"), dpi=300, height=NULL, width=NULL, main="", main.cex=1.5, 
     main.font=2, trait.legend.ncol=NULL, trait.legend.cex=NULL, 
     trait.legend.pos=c("left","middle","right"),verbose=TRUE)
 }
@@ -213,6 +213,9 @@ character or vector, the color of confidence interval of QQplot.
  \item{file.output}{
 a logical, users can choose whether to output the plot results.
 }
+ \item{file.name}{
+a character or vector, the names of output files.
+}
  \item{file}{
 a character, users can choose the different output formats of plot, so for, "jpg", "pdf", "tiff" can be selected by users.
 }
@@ -224,9 +227,6 @@ the height of output files.
 }
   \item{width}{
 the width of output files.
-}
-  \item{memo}{
-add a character to the output file name.
 }
   \item{main}{
 character of vector, the title of the plot for manhattan plot and qqplot.
@@ -254,8 +254,8 @@ whether to print the log information.
 \tabular{ll}{
 Package: \tab CMplot\cr
 Type: \tab Package\cr
-Version: \tab 4.2.0\cr
-Date: \tab 2022-10-10\cr
+Version: \tab 4.3.1\cr
+Date: \tab 2023-04-15\cr
 License: \tab GPL(>=2)\cr
 }
 }

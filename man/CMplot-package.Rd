@@ -30,8 +30,8 @@ CMplot(Pmap,col=c("#4197d8","#f8c120","#413496","#495226",
     cir.axis=TRUE,cir.axis.col="black",cir.axis.grid=TRUE,conf.int=TRUE,
     conf.int.col=NULL,file.output=TRUE,file.name="",file=c("jpg","pdf",
     "tiff","png"),dpi=300,height=NULL,width=NULL,main="",main.cex=1.5,
-    main.font=2,trait.legend.ncol=NULL,trait.legend.cex=NULL,
-    trait.legend.pos=c("left","middle","right"),box=FALSE,verbose=TRUE)
+    main.font=2,legend.ncol=NULL,legend.cex=1,
+    legend.pos=c("left","middle","right"),box=FALSE,verbose=TRUE)
 }
 \arguments{
   \item{Pmap}{
@@ -235,13 +235,13 @@ size of title.
   \item{main.font}{
 font of title.
 }
- \item{trait.legend.ncol}{
+ \item{legend.ncol}{
 number of column for the legend of multiple traits manhattan plot.
 }
- \item{trait.legend.cex}{
+ \item{legend.cex}{
 set the size of the legend text of trait name.
 }
- \item{trait.legend.pos}{
+ \item{legend.pos}{
 control the legend position of trait name on the plot, three options "left", "middle", "right" are available.
 }
  \item{box}{
@@ -255,8 +255,8 @@ whether to print the log information.
 \tabular{ll}{
 Package: \tab CMplot\cr
 Type: \tab Package\cr
-Version: \tab 4.4.1\cr
-Date: \tab 2023-08-18\cr
+Version: \tab 4.4.3\cr
+Date: \tab 2023-10-10\cr
 License: \tab GPL(>=2)\cr
 }
 }
